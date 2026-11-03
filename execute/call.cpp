@@ -21,7 +21,7 @@ call::call(std::string command, std::string directory, CliEnv *env) {
 }
 
 //execute help functions
-std::string read_dir(std::vector<std::string> args, int argument);
+std::string read_dir(std::string argument);
 
 void call::execute() {
     std::stringstream ss(this->command);
@@ -55,7 +55,7 @@ void call::execute() {
             printf("cd doesn't take more than 1 input");
         }
         //ändert direkt global this->directory
-        read_dir(args, argument);
+        read_dir(args[argument]);
         this->env->set_directory(this->directory);
         printf("dir: %s", this->directory.c_str());
     }else if (sepecial == "pwd") {
@@ -66,22 +66,24 @@ void call::execute() {
     printf("\n");
     return;
 }
-std::string call::read_dir(std::vector<std::string> args, int argument) {
-    if (args[argument][0] == '.' && args[argument][1] == '.') {
-        if (args[argument][2] == '\0') {
-            for (int i = this->directory.length() -1 ; i > 0; i--) {
-                if (this->directory.at(i) == '/') {
-                    break;
-                }else {
+void call::read_dir(std::string argument) {
+    std::string current_argument = argument;
+    if (argument[0] == '.' && argument[1] == '.') {
+        for (int i = this->directory.length() -1 ; i > 0; i--) {
+            if (this->directory.at(i) == '/') {
                     this->directory.pop_back();
-                }
+                    break;
+            }else {
+                this->directory.pop_back();
             }
+       }
+        if(argument[2] == '/') {
+            call::read_dir(current_argument.substr(3));
         }
-
-    }else if (args[argument][0] == '~') {
-        this->directory = args[argument];
+    }else if (argument[0] == '~') {
+        this->directory = argument;
     }else {
-        this->directory += "/"+args[argument];
+        this->directory += "/"+argument;
     }
 }
 

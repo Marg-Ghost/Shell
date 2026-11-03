@@ -1,1 +1,4 @@
-"exit" = leave cli interface
+"exit"              = leave cli interface
+"cd {argument}"     = enters a dir | Note: ".." lets you exit the current dir
+"pwd"               = shows current dir
+"echo {argument}"   = prints out argument

@@ -25,7 +25,7 @@ public:
 
     //help execute functions
     //müssen hier sein sonst wird recucrsion unnötig komplex
-    std::string read_dir(std::vector<std::string> args, int argument);
+    void read_dir(std::string argument);
 };
 
 
